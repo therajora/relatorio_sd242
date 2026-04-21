@@ -5,7 +5,9 @@
 ```
   Usuário
      │
-     │  make sim-baud
+     ├── make sim-baud          (headless)
+     └── make sim-gui UVM_TEST=uart_baud_rate_test  (com janela)
+     │
      ▼
 ┌─────────────────────────────────────────────────────┐
 │  Makefile  (relatorio_sd242/Makefile)               │
@@ -14,21 +16,23 @@
 │  SIM_SCRIPT  = /workspace/uvm_activity/scripts/...  │
 │                                                     │
 │  docker compose -f docker/docker-compose.yml        │
-│    run --rm vivado bash -c                          │
-│    "source settings64.sh && UVM_TEST=... bash ..."  │
+│    run --rm vivado bash -c "..."                    │
 └─────────────────┬───────────────────────────────────┘
                   │ invoca
                   ▼
 ┌─────────────────────────────────────────────────────┐
 │  docker-compose.yml  (relatorio_sd242/docker/)      │
 │                                                     │
-│  build:                                             │
-│    context: .  ◄── mesma pasta docker/              │
-│    dockerfile: Dockerfile                           │
+│  build:  context: .  /  dockerfile: Dockerfile      │
 │                                                     │
 │  volumes:                                           │
-│    ../../  →  /workspace          (projeto)         │
-│    ../../2025.2  →  /workspace/2025.2  (Vivado)     │
+│    ../../          →  /workspace       (projeto)    │
+│    ../../2025.2    →  /workspace/2025.2 (Vivado)    │
+│    /tmp/.X11-unix  →  /tmp/.X11-unix   (GUI X11)   │
+│    /mnt/wslg       →  /mnt/wslg        (WSLg)      │
+│                                                     │
+│  environment:                                       │
+│    DISPLAY, WAYLAND_DISPLAY, XDG_RUNTIME_DIR        │
 └──────┬──────────────────┬───────────────────────────┘
        │ build            │ monta volumes
        ▼                  ▼
@@ -37,19 +41,15 @@
 │             │   │                                    │
 │ FROM        │   │  /workspace/                       │
 │ almalinux:9 │   │  ├── uvm_activity/                 │
-│             │   │  │   ├── rtl/                      │
-│ instala:    │   │  │   ├── sim/                      │
-│ gcc, make,  │   │  │   └── scripts/sim_uvm_xsim.sh  │
-│ libX11,     │   │  │                                 │
-│ python3,    │   │  └── 2025.2/Vivado/               │
-│ ncurses,    │   │      ├── settings64.sh  ◄─ source  │
-│ openssl...  │   │      └── bin/                      │
-│             │   │          ├── xvlog  ◄─ compila     │
-│ USER vivado │   │          ├── xelab  ◄─ elabora     │
-└─────────────┘   │          └── xsim   ◄─ simula      │
-                  └────────────────────────────────────┘
-
-
+│             │   │  │   ├── rtl/  sim/  scripts/      │
+│ instala:    │   │  │   └── wave.tcl                  │
+│ gcc, make,  │   │  └── 2025.2/Vivado/               │
+│ libX11,     │   │      ├── settings64.sh             │
+│ python3,    │   │      └── bin/xvlog, xelab, xsim    │
+│ ncurses...  │   │                                    │
+│             │   │  /tmp/.X11-unix  (socket X11)      │
+│ USER vivado │   │  /mnt/wslg       (socket WSLg)     │
+└─────────────┘   └────────────────────────────────────┘
 ```
 
 ---
@@ -61,41 +61,83 @@ HOST (WSL /home/rafael/fpga/)          CONTAINER (/workspace/)
 ─────────────────────────────────      ──────────────────────────────────
 relatorio_sd242/           ──────────► /workspace/relatorio_sd242/
 uvm_activity/              ──────────► /workspace/uvm_activity/
-│  ├── rtl/*.sv            ──────────► /workspace/uvm_activity/rtl/*.sv
-│  ├── sim/*.sv            ──────────► /workspace/uvm_activity/sim/*.sv
-│  └── scripts/            ──────────► /workspace/uvm_activity/scripts/
+│  ├── rtl/*.sv                          (código RTL do DUT)
+│  ├── sim/*.sv                          (testbench UVM)
+│  ├── scripts/sim_uvm_xsim.sh          (script de compilação)
+│  └── wave.tcl                          (configuração de sinais GUI)
 2025.2/Vivado/             ──────────► /workspace/2025.2/Vivado/
 │  ├── settings64.sh                    (configura PATH dos binários)
-│  └── bin/xvlog,xelab,xsim            (ferramentas de simulação)
+│  └── bin/xvlog, xelab, xsim          (ferramentas de simulação)
+/tmp/.X11-unix             ──────────► /tmp/.X11-unix
+/mnt/wslg                  ──────────► /mnt/wslg
 ```
 
-> O container não tem os binários do Vivado embutidos — eles ficam no host
-> e são acessados via volume. O Dockerfile instala apenas as **dependências
-> de sistema** (bibliotecas, compiladores) que o Vivado precisa para rodar.
+> O container não tem Vivado embutido — fica no host e é acessado via volume.
+> O Dockerfile instala apenas as **dependências de sistema** (libs, compiladores).
 
 ---
 
-## Sequência de execução dentro do container
+## Modo headless vs modo GUI
 
 ```
-bash -c "source /workspace/2025.2/Vivado/settings64.sh
-         && UVM_TEST=uart_baud_rate_test
-            bash /workspace/uvm_activity/scripts/sim_uvm_xsim.sh"
-         │
-         ├─► source settings64.sh
-         │     └── adiciona xvlog/xelab/xsim ao PATH
-         │
-         └─► sim_uvm_xsim.sh
+make sim UVM_TEST=uart_baud_rate_test
+     │
+     └──► bash -c "source settings64.sh && UVM_TEST=... bash sim_uvm_xsim.sh"
                │
-               ├─1─► xvlog -sv -L uvm  rtl/*.sv sim/*.sv
-               │       └── compila SystemVerilog → work/
+               ├─ xvlog  →  compila RTL + testbench
+               ├─ xelab  →  elabora hierarquia → snapshot work.testbench
+               └─ xsim --runall  →  simula → simulate.log → PASS/FAIL
+                                                   (sem janela)
+
+
+make sim-gui UVM_TEST=uart_baud_rate_test
+     │
+     ├─1─► make sim  (headless — garante snapshot compilado)
+     │         └─ xvlog + xelab + xsim --runall
+     │
+     └─2─► xsim work.testbench -gui -tclbatch wave.tcl
                │
-               ├─2─► xelab testbench -L uvm -L work
-               │       └── elabora hierarquia → snapshot
+               ├── wave.tcl carrega sinais no viewer:
+               │     log_wave -recursive *
+               │     add_wave /testbench/bfm_uart0/clk
+               │     add_wave /testbench/bfm_reg0/irq
+               │     ...
+               │     run all
                │
-               └─3─► xsim snapshot --testplusarg UVM_TESTNAME=...
-                       └── simula → simulate.log
-                             └── grep PASS/FAIL → veredicto
+               └── Janela Vivado abre no Windows (via WSLg)
+                   com formas de onda do teste
+```
+
+---
+
+## Pré-requisito para modo GUI: WSLg (Windows 11)
+
+```
+Windows 11
+│
+├── WSLg (incluso por padrão)
+│     ├── Servidor X11 virtual em /tmp/.X11-unix/X0
+│     └── Socket Wayland em /mnt/wslg/
+│
+└── WSL2 (Ubuntu-24.04)
+      │
+      ├── DISPLAY=:0  (automático no WSL2 com WSLg)
+      │
+      └── Docker Container
+            ├── /tmp/.X11-unix montado ◄── volume do compose
+            ├── /mnt/wslg montado      ◄── volume do compose
+            ├── DISPLAY=:0             ◄── environment do compose
+            │
+            └── xsim -gui
+                  └── desenha janela no display :0
+                        └── aparece no Windows via WSLg ✓
+```
+
+**Verificar se WSLg está funcionando** (rodar no WSL2 antes de `make sim-gui`):
+
+```bash
+echo $DISPLAY          # deve mostrar :0
+xterm &                # deve abrir uma janela no Windows
 ```
 
 ---
@@ -103,33 +145,34 @@ bash -c "source /workspace/2025.2/Vivado/settings64.sh
 ## Ciclo de vida do container
 
 ```
-make sim-baud
+make sim-gui UVM_TEST=uart_parity_error_test
      │
-     ├──► docker compose run --rm vivado bash -c "..."
-     │         │
-     │         ├── container NASCE   (imagem fpga-vivado:dev)
-     │         ├── volumes MONTADOS  (host → /workspace)
-     │         ├── comando EXECUTADO (source + sim_script)
-     │         └── container DESTRUÍDO (--rm)
+     ├─ Container 1 (headless):
+     │     nasce → compila/elabora/simula → DESTRUÍDO (--rm)
+     │     artefatos ficam em uvm_activity/work/sim/uart_parity_error_test/
      │
-     └──► logs e artefatos ficam em uvm_activity/work/sim/<teste>/
-          (persistem no host porque /workspace é um bind mount)
+     └─ Container 2 (GUI):
+           nasce → xsim -gui abre janela → usuário inspeciona sinais
+           fecha janela → DESTRUÍDO (--rm)
+
+Os arquivos de saída (.wdb, .log) persistem no host
+porque /workspace é bind mount do repositório local.
 ```
 
 ---
 
-## Como fazer build da imagem (uma única vez)
+## Build da imagem (uma única vez)
 
 ```
 make build
-  └── docker compose -f docker/docker-compose.yml build
+  └── docker compose build
         └── Dockerfile
-              ├── FROM almalinux:9        (~200 MB base)
-              ├── dnf install ...         (~500 MB dependências)
-              └── useradd vivado          (usuário sem root)
+              ├── FROM almalinux:9          (~200 MB)
+              ├── dnf install libX11, gcc,  (~500 MB dependências)
+              │   python3, ncurses, ...
+              └── useradd vivado
 
-Resultado: imagem fpga-vivado:dev (~700 MB) salva localmente no Docker
+Resultado: imagem fpga-vivado:dev (~700 MB) cacheada localmente
 ```
 
-Após o build, `make sim`, `make sim-all` etc. usam a imagem cacheada sem
-precisar reconstruir.
+Após o build, todos os `make sim*` usam a imagem cacheada.

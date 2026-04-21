@@ -11,9 +11,15 @@ services:
       # Raiz do repositório montada em /workspace
       - ../../:/workspace:rw
       # Vivado instalado localmente, montado dentro do workspace
-      # Ajuste o caminho abaixo para onde o Vivado está no seu host
+      # Ajuste VIVADO_PATH se o Vivado estiver em outro lugar no host
       - ${VIVADO_PATH:-../../2025.2}:/workspace/2025.2:rw
+      # X11 / WSLg — necessário para modo GUI (Vivado com janela)
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /mnt/wslg:/mnt/wslg:rw
     working_dir: /workspace
     environment:
       - DISPLAY=${DISPLAY:-:0}
+      - WAYLAND_DISPLAY=${WAYLAND_DISPLAY:-}
+      - XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-}
+      - QT_X11_NO_MITSHM=1
     network_mode: host
