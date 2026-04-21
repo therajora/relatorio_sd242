@@ -2,7 +2,8 @@
 
 **Disciplina:** SD242 — Sistemas Digitais  
 **Data:** 2026-04-21  
-**Ferramentas:** Vivado 2025.2 · xsim · Docker · UVM 1.2 · SystemVerilog
+**Ferramentas:** Vivado 2025.2 · xsim · Docker · UVM 1.2 · SystemVerilog  
+**Repositório:** https://github.com/therajora/relatorio_sd242
 
 ---
 
@@ -88,7 +89,9 @@ relatorio_sd242/
 
 O código fonte que roda está em `../uvm_activity/`. Os arquivos em `codigo/` são cópias organizadas para leitura e entrega.
 
-Para rodar os testes, a partir da raiz do repositório (`/home/rafael/fpga`):
+### Opção 1 — Docker (ambiente local, via `sim_uvm_xsim.sh`)
+
+A partir da raiz do repositório (`/home/rafael/fpga`):
 
 ```bash
 # Teste baseline
@@ -106,6 +109,29 @@ docker compose -f docker-compose.vivado.yml run --rm vivado \
   bash -c 'source /workspace/2025.2/Vivado/settings64.sh && \
            UVM_TEST=uart_parity_error_test bash /workspace/uvm_activity/scripts/sim_uvm_xsim.sh'
 ```
+
+### Opção 2 — Cluster / Vivado TCL (ambiente do laboratório, via `run.tcl`)
+
+No terminal do cluster com Vivado disponível, dentro da pasta `uvm_activity/`:
+
+```tcl
+vivado -mode tcl
+cd <caminho>/uvm_activity
+# Selecionar o teste desejado (editar config.tcl ou sobrescrever a variável):
+set UVM_TEST "uart_baud_rate_test"   ;# ou uart_test / uart_parity_error_test
+source run.tcl
+```
+
+Para rodar com GUI e ver formas de onda:
+
+```tcl
+set GUI_MODE "gui"
+set UVM_TEST "uart_parity_error_test"
+source run.tcl
+# O wave.tcl é carregado automaticamente e configura os sinais no viewer
+```
+
+> Os scripts `config.tcl`, `run.tcl` e `wave.tcl` foram desenvolvidos pelo professor e adaptados para incluir todos os arquivos dos novos testes.
 
 Para detalhes sobre o ambiente Docker e como reproduzir, ver `documentos/02_ambiente_simulacao.md`.
 

@@ -1,0 +1,19 @@
+services:
+  vivado:
+    image: fpga-vivado:dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    volumes:
+      # Raiz do repositório montada em /workspace
+      - ../../:/workspace:rw
+      # Vivado instalado localmente, montado dentro do workspace
+      # Ajuste o caminho abaixo para onde o Vivado está no seu host
+      - ${VIVADO_PATH:-../../2025.2}:/workspace/2025.2:rw
+    working_dir: /workspace
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+    network_mode: host

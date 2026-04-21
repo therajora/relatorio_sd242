@@ -2,7 +2,8 @@
 
 **Data:** 2026-04-21  
 **Disciplina:** SD242 — Sistemas Digitais  
-**Ferramentas:** Vivado 2025.2 + xsim, Docker Compose, UVM 1.2, SystemVerilog
+**Ferramentas:** Vivado 2025.2 + xsim, Docker Compose, UVM 1.2, SystemVerilog  
+**Repositório:** https://github.com/therajora/relatorio_sd242
 
 ---
 
