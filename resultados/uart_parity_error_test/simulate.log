@@ -1,0 +1,141 @@
+#-----------------------------------------------------------
+# xsim v2025.2 (64-bit)
+# SW Build 6299465 on Fri Nov 14 12:34:56 MST 2025
+# IP Build 6300035 on Fri Nov 14 10:48:45 MST 2025
+# SharedData Build 6298862 on Thu Nov 13 04:50:51 MST 2025
+# Start of session at: Tue Apr 21 13:44:06 2026
+# Process ID         : 694
+# Current directory  : /workspace/uvm_activity/work/sim/uart_parity_error_test
+# Command line       : xsim -log simulate.log -mode tcl -source {xsim.dir/work.testbench/xsim_script.tcl}
+# Log file           : /workspace/uvm_activity/work/sim/uart_parity_error_test/simulate.log
+# Journal file       : /workspace/uvm_activity/work/sim/uart_parity_error_test/xsim.jou
+# Running On         : vivado-dev
+# Platform           : almalinux
+# Operating System   : AlmaLinux 9.7 (Moss Jungle Cat)
+# Processor Detail   : 12th Gen Intel(R) Core(TM) i5-12500H
+# CPU Frequency      : 3110.398 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 16605 MB
+# Swap memory        : 4294 MB
+# Total Virtual      : 20900 MB
+# Available Virtual  : 18894 MB
+#-----------------------------------------------------------
+source xsim.dir/work.testbench/xsim_script.tcl
+# xsim {work.testbench} -testplusarg UVM_TESTNAME=uart_parity_error_test -testplusarg UVM_VERBOSITY=UVM_MEDIUM -testplusarg seed=1 -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+UVM_INFO /workspace/2025.2/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(18601) @ 0: reporter [UVM/RELNOTES] 
+----------------------------------------------------------------
+UVM-1.2
+(C) 2007-2014 Mentor Graphics Corporation
+(C) 2007-2014 Cadence Design Systems, Inc.
+(C) 2006-2014 Synopsys, Inc.
+(C) 2011-2013 Cypress Semiconductor Corp.
+(C) 2013-2014 NVIDIA Corporation
+----------------------------------------------------------------
+
+  ***********       IMPORTANT RELEASE NOTES         ************
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_NO_DEPRECATED undefined.
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_OBJECT_DO_NOT_NEED_CONSTRUCTOR undefined.
+
+      (Specify +UVM_NO_RELNOTES to turn off this notice)
+
+UVM_INFO /workspace/2025.2/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(18648) @ 0: reporter [NO_DPI_TSTNAME] UVM_NO_DPI defined--getting UVM_TESTNAME directly, without DPI
+UVM_INFO @ 0: reporter [RNTST] Running test uart_parity_error_test...
+UVM_INFO /workspace/uvm_activity/sim/environment.sv(37) @ 0: uvm_test_top.uart_env [uvm_test_top.uart_env] environment test_mode=parity
+UVM_INFO /workspace/uvm_activity/sim/rx_driver.sv(28) @ 0: uvm_test_top.uart_env.rx_ag.rx_drv [uvm_test_top.uart_env.rx_ag.rx_drv] rx_driver test_mode=parity
+UVM_INFO /workspace/uvm_activity/sim/tx_driver.sv(29) @ 0: uvm_test_top.uart_env.tx_ag.tx_drv [uvm_test_top.uart_env.tx_ag.tx_drv] tx_driver test_mode=parity
+UVM_INFO /workspace/uvm_activity/sim/rx_agent.sv(59) @ 0: uvm_test_top.uart_env.rx_ag [uvm_test_top.uart_env.rx_ag] Connected driver to sequencer.
+UVM_INFO /workspace/uvm_activity/sim/tx_agent.sv(60) @ 0: uvm_test_top.uart_env.tx_ag [uvm_test_top.uart_env.tx_ag] Connected driver to sequencer.
+UVM_INFO /workspace/2025.2/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(20867) @ 0: reporter [UVM/COMP/NAMECHECK] This implementation of the component name checks requires DPI to be enabled
+UVM_INFO /workspace/uvm_activity/sim/uart_parity_error_test.sv(55) @ 7015000: uvm_test_top [uvm_test_top] Iniciando sequence de paridade no rx_sqr...
+UVM_INFO /workspace/uvm_activity/sim/parity_error_sequence.sv(38) @ 7015000: uvm_test_top.uart_env.rx_ag.rx_sqr@@parity_error_sequence [uvm_test_top.uart_env.rx_ag.rx_sqr.parity_error_sequence] Item 1: data=0x65 inject_err=0
+UVM_INFO /workspace/uvm_activity/sim/rx_driver.sv(46) @ 7015000: uvm_test_top.uart_env.rx_ag.rx_drv [uvm_test_top.uart_env.rx_ag.rx_drv] send parity: data=0x65 type=even inject_err=0
+UVM_INFO /workspace/uvm_activity/sim/uart_bfm.sv(182) @ 89575000: reporter [UART_BFM] Error on 1st stop bit.
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(60) @ 105995000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb] Item 1: esperado_err=0 observado_err=0
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(63) @ 105995000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb]   MATCH
+UVM_INFO /workspace/uvm_activity/sim/parity_error_sequence.sv(38) @ 119995000: uvm_test_top.uart_env.rx_ag.rx_sqr@@parity_error_sequence [uvm_test_top.uart_env.rx_ag.rx_sqr.parity_error_sequence] Item 2: data=0x77 inject_err=0
+UVM_INFO /workspace/uvm_activity/sim/rx_driver.sv(46) @ 119995000: uvm_test_top.uart_env.rx_ag.rx_drv [uvm_test_top.uart_env.rx_ag.rx_drv] send parity: data=0x77 type=even inject_err=0
+UVM_INFO /workspace/uvm_activity/sim/uart_bfm.sv(182) @ 202555000: reporter [UART_BFM] Error on 1st stop bit.
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(60) @ 219115000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb] Item 2: esperado_err=0 observado_err=0
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(63) @ 219115000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb]   MATCH
+UVM_INFO /workspace/uvm_activity/sim/parity_error_sequence.sv(38) @ 232975000: uvm_test_top.uart_env.rx_ag.rx_sqr@@parity_error_sequence [uvm_test_top.uart_env.rx_ag.rx_sqr.parity_error_sequence] Item 3: data=0x86 inject_err=0
+UVM_INFO /workspace/uvm_activity/sim/rx_driver.sv(46) @ 232975000: uvm_test_top.uart_env.rx_ag.rx_drv [uvm_test_top.uart_env.rx_ag.rx_drv] send parity: data=0x86 type=even inject_err=0
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(60) @ 331675000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb] Item 3: esperado_err=0 observado_err=0
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(63) @ 331675000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb]   MATCH
+UVM_INFO /workspace/uvm_activity/sim/parity_error_sequence.sv(38) @ 345955000: uvm_test_top.uart_env.rx_ag.rx_sqr@@parity_error_sequence [uvm_test_top.uart_env.rx_ag.rx_sqr.parity_error_sequence] Item 4: data=0x7d inject_err=0
+UVM_INFO /workspace/uvm_activity/sim/rx_driver.sv(46) @ 345955000: uvm_test_top.uart_env.rx_ag.rx_drv [uvm_test_top.uart_env.rx_ag.rx_drv] send parity: data=0x7d type=even inject_err=0
+UVM_INFO /workspace/uvm_activity/sim/uart_bfm.sv(182) @ 428515000: reporter [UART_BFM] Error on 1st stop bit.
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(60) @ 444795000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb] Item 4: esperado_err=0 observado_err=0
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(63) @ 444795000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb]   MATCH
+UVM_INFO /workspace/uvm_activity/sim/parity_error_sequence.sv(38) @ 458935000: uvm_test_top.uart_env.rx_ag.rx_sqr@@parity_error_sequence [uvm_test_top.uart_env.rx_ag.rx_sqr.parity_error_sequence] Item 5: data=0xf1 inject_err=0
+UVM_INFO /workspace/uvm_activity/sim/rx_driver.sv(46) @ 458935000: uvm_test_top.uart_env.rx_ag.rx_drv [uvm_test_top.uart_env.rx_ag.rx_drv] send parity: data=0xf1 type=even inject_err=0
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(60) @ 557915000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb] Item 5: esperado_err=0 observado_err=0
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(63) @ 557915000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb]   MATCH
+UVM_INFO /workspace/uvm_activity/sim/parity_error_sequence.sv(38) @ 571915000: uvm_test_top.uart_env.rx_ag.rx_sqr@@parity_error_sequence [uvm_test_top.uart_env.rx_ag.rx_sqr.parity_error_sequence] Item 6: data=0x38 inject_err=1
+UVM_INFO /workspace/uvm_activity/sim/rx_driver.sv(46) @ 571915000: uvm_test_top.uart_env.rx_ag.rx_drv [uvm_test_top.uart_env.rx_ag.rx_drv] send parity: data=0x38 type=even inject_err=1
+UVM_INFO /workspace/uvm_activity/sim/uart_bfm.sv(100) @ 650135000: reporter [UART_BFM] Injetando ERRO de paridade (even): data=0x38 bit_ok=1 enviando=0
+UVM_INFO /workspace/uvm_activity/sim/uart_bfm.sv(182) @ 654475000: reporter [UART_BFM] Error on 1st stop bit.
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(60) @ 671035000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb] Item 6: esperado_err=1 observado_err=1
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(63) @ 671035000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb]   MATCH
+UVM_INFO /workspace/uvm_activity/sim/parity_error_sequence.sv(38) @ 684895000: uvm_test_top.uart_env.rx_ag.rx_sqr@@parity_error_sequence [uvm_test_top.uart_env.rx_ag.rx_sqr.parity_error_sequence] Item 7: data=0xce inject_err=1
+UVM_INFO /workspace/uvm_activity/sim/rx_driver.sv(46) @ 684895000: uvm_test_top.uart_env.rx_ag.rx_drv [uvm_test_top.uart_env.rx_ag.rx_drv] send parity: data=0xce type=even inject_err=1
+UVM_INFO /workspace/uvm_activity/sim/uart_bfm.sv(100) @ 763115000: reporter [UART_BFM] Injetando ERRO de paridade (even): data=0xce bit_ok=1 enviando=0
+UVM_INFO /workspace/uvm_activity/sim/uart_bfm.sv(182) @ 767455000: reporter [UART_BFM] Error on 1st stop bit.
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(60) @ 783595000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb] Item 7: esperado_err=1 observado_err=1
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(63) @ 783595000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb]   MATCH
+UVM_INFO /workspace/uvm_activity/sim/parity_error_sequence.sv(38) @ 797875000: uvm_test_top.uart_env.rx_ag.rx_sqr@@parity_error_sequence [uvm_test_top.uart_env.rx_ag.rx_sqr.parity_error_sequence] Item 8: data=0x8a inject_err=1
+UVM_INFO /workspace/uvm_activity/sim/rx_driver.sv(46) @ 797875000: uvm_test_top.uart_env.rx_ag.rx_drv [uvm_test_top.uart_env.rx_ag.rx_drv] send parity: data=0x8a type=even inject_err=1
+UVM_INFO /workspace/uvm_activity/sim/uart_bfm.sv(100) @ 876095000: reporter [UART_BFM] Injetando ERRO de paridade (even): data=0x8a bit_ok=1 enviando=0
+UVM_INFO /workspace/uvm_activity/sim/uart_bfm.sv(182) @ 880435000: reporter [UART_BFM] Error on 1st stop bit.
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(60) @ 896715000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb] Item 8: esperado_err=1 observado_err=1
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(63) @ 896715000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb]   MATCH
+UVM_INFO /workspace/uvm_activity/sim/parity_error_sequence.sv(38) @ 910855000: uvm_test_top.uart_env.rx_ag.rx_sqr@@parity_error_sequence [uvm_test_top.uart_env.rx_ag.rx_sqr.parity_error_sequence] Item 9: data=0x4b inject_err=1
+UVM_INFO /workspace/uvm_activity/sim/rx_driver.sv(46) @ 910855000: uvm_test_top.uart_env.rx_ag.rx_drv [uvm_test_top.uart_env.rx_ag.rx_drv] send parity: data=0x4b type=even inject_err=1
+UVM_INFO /workspace/uvm_activity/sim/uart_bfm.sv(100) @ 989075000: reporter [UART_BFM] Injetando ERRO de paridade (even): data=0x4b bit_ok=0 enviando=1
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(60) @ 1009835000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb] Item 9: esperado_err=1 observado_err=1
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(63) @ 1009835000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb]   MATCH
+UVM_INFO /workspace/uvm_activity/sim/parity_error_sequence.sv(38) @ 1023835000: uvm_test_top.uart_env.rx_ag.rx_sqr@@parity_error_sequence [uvm_test_top.uart_env.rx_ag.rx_sqr.parity_error_sequence] Item 10: data=0x42 inject_err=1
+UVM_INFO /workspace/uvm_activity/sim/rx_driver.sv(46) @ 1023835000: uvm_test_top.uart_env.rx_ag.rx_drv [uvm_test_top.uart_env.rx_ag.rx_drv] send parity: data=0x42 type=even inject_err=1
+UVM_INFO /workspace/uvm_activity/sim/uart_bfm.sv(100) @ 1102055000: reporter [UART_BFM] Injetando ERRO de paridade (even): data=0x42 bit_ok=0 enviando=1
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(60) @ 1122955000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb] Item 10: esperado_err=1 observado_err=1
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(63) @ 1122955000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb]   MATCH
+UVM_INFO /workspace/2025.2/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(19968) @ 1222955000: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(76) @ 1222955000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb] 
+--- PARITY SCOREBOARD SUMMARY ---
+ Matches: 10, Mismatches: 0
+UVM_INFO /workspace/uvm_activity/sim/scoreboard_parity.sv(80) @ 1222955000: uvm_test_top.uart_env.par_scb [uvm_test_top.uart_env.par_scb] TEST PASSED: flag rx_error consistente com injecoes.
+UVM_INFO /workspace/2025.2/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(13673) @ 1222955000: reporter [UVM/REPORT/SERVER] 
+--- UVM Report Summary ---
+
+** Report counts by severity
+UVM_INFO :   64
+UVM_WARNING :    0
+UVM_ERROR :    0
+UVM_FATAL :    0
+** Report counts by id
+[NO_DPI_TSTNAME]     1
+[RNTST]     1
+[TEST_DONE]     1
+[UART_BFM]    11
+[UVM/COMP/NAMECHECK]     1
+[UVM/RELNOTES]     1
+[uvm_test_top]     1
+[uvm_test_top.uart_env]     1
+[uvm_test_top.uart_env.par_scb]    22
+[uvm_test_top.uart_env.rx_ag]     1
+[uvm_test_top.uart_env.rx_ag.rx_drv]    11
+[uvm_test_top.uart_env.rx_ag.rx_sqr.parity_error_sequence]    10
+[uvm_test_top.uart_env.tx_ag]     1
+[uvm_test_top.uart_env.tx_ag.tx_drv]     1
+
+WARNING: The Functional Coverage Database has not been updated during simulation. Please recheck testbench to confirm that covergroups are being instantiated correctly and rerun simulation.
+$finish called at time : 1222955 ns : File "/workspace/2025.2/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv" Line 18699
+exit
+INFO: xsimkernel Simulation Memory Usage: 305048 KB (Peak: 349508 KB), Simulation CPU Usage: 1020 ms
+INFO: [Common 17-206] Exiting xsim at Tue Apr 21 13:44:09 2026...
